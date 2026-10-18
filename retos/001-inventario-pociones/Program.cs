@@ -13,11 +13,11 @@ void TestHuecos0()
     Console.WriteLine("TestHuecos0");
     inventory.Print();
     Console.WriteLine("Adding 3 Potions to empty inventory:");
-    inventory.TryAdd(ItemType.Potion, 3);
-    inventory.Print();
+    var result = inventory.TryAdd(ItemType.Potion, 3);
+    inventory.Print(result);
     Console.WriteLine("Adding 2 Coins to empty inventory:");
-    inventory.TryAdd(ItemType.Coin, 2);
-    inventory.Print();
+    result = inventory.TryAdd(ItemType.Coin, 2);
+    inventory.Print(result);
     Console.WriteLine("-----------------------------------------");
 }
 
@@ -30,8 +30,8 @@ void TestPilaExistenteYCrearOtra()
     inventory.TryAdd(ItemType.Potion, 3);
     inventory.Print();
     Console.WriteLine("Adding 3 Potions to empty inventory:");
-    inventory.TryAdd(ItemType.Potion, 3);
-    inventory.Print();
+    var result = inventory.TryAdd(ItemType.Potion, 3);
+    inventory.Print(result);
     Console.WriteLine("-----------------------------------------");
 }
 
@@ -44,8 +44,8 @@ void TestRechazarOperacion()
     inventory.TryAdd(ItemType.Potion, 3);
     inventory.Print();
     Console.WriteLine("Adding 20 Potions to empty inventory:");
-    inventory.TryAdd(ItemType.Potion, 20);
-    inventory.Print();
+    var result = inventory.TryAdd(ItemType.Potion, 20);
+    inventory.Print(result);
     Console.WriteLine("-----------------------------------------");
 }
 
@@ -57,8 +57,8 @@ void TestRechazarCantidadInvalida()
     Console.WriteLine("TestRechazarCantidadInvalida");
     inventory.TryAdd(ItemType.Potion, 0);
     inventory.Print();
-    inventory.TryAdd(ItemType.Potion, -5);
-    inventory.Print();
+    var result = inventory.TryAdd(ItemType.Potion, -5);
+    inventory.Print(result);
     Console.WriteLine("-----------------------------------------");
 }
 
@@ -89,9 +89,9 @@ public class Inventory
         var quedan = count;
 
         if (quedan > 0)
-            CompletarPilasExistentes(candidatos, item, count, ref quedan);
+            CompletarPilasExistentes(candidatos, item, ref quedan);
         if (quedan > 0)
-            CompletarHuecosVacios(candidatos, item, count, ref quedan);
+            CompletarHuecosVacios(candidatos, ref quedan);
 
         if (quedan != 0)
             return false;
@@ -108,8 +108,23 @@ public class Inventory
         return true;
     }
 
+    public void Print()
+    {
+        for (int i = 0; i < ItemsType.Length; i++)
+        {
+            var itemType = ItemsType[i];
+            Console.WriteLine($"Slot {i}: {itemType.ItemType?.ToString() ?? "Empty"}, Free: {itemType.Free}");
+        }
+    }
+
+    public void Print(bool result)
+    {
+        Console.WriteLine($"Result: {result}");
+        Print();
+    }
+
     // Completa primero las pilas existentes del mismo tipo.
-    private void CompletarPilasExistentes(List<(int idx, int count)> candidatos, ItemType item, int count, ref int quedan)
+    private void CompletarPilasExistentes(List<(int idx, int count)> candidatos, ItemType item, ref int quedan)
     {
         for (int i = 0; i < ItemsType.Length && quedan > 0; i++)
         {
@@ -129,7 +144,7 @@ public class Inventory
     }
 
     // Si todavía quedan unidades, usa los huecos vacíos.
-    private void CompletarHuecosVacios(List<(int idx, int count)> candidatos, ItemType item, int count, ref int quedan)
+    private void CompletarHuecosVacios(List<(int idx, int count)> candidatos, ref int quedan)
     {
         for (int i = 0; i < ItemsType.Length && quedan > 0; i++)
         {
@@ -145,17 +160,6 @@ public class Inventory
                     candidatos.Add((i, usar));
                 }
             }
-        }
-    }
-
-
-
-    public void Print()
-    {
-        for (int i = 0; i < ItemsType.Length; i++)
-        {
-            var itemType = ItemsType[i];
-            Console.WriteLine($"Slot {i}: {itemType.ItemType?.ToString() ?? "Empty"}, Free: {itemType.Free}");
         }
     }
 }
