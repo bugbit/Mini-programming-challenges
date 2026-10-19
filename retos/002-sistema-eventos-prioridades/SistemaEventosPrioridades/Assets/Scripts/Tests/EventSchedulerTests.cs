@@ -126,20 +126,37 @@ public class EventSchedulerTests
     public void ExecuteNext_EqualPriorityEvents_ExecutesInOrder()
     {
         var scheduler = new EventScheduler();
-        scheduler.TrySchedule("Event1", 5, () => { Debug.Log("Event1 executed"); });
-        scheduler.TrySchedule("Event2", 5, () => { Debug.Log("Event2 executed"); });
+        var id = 1;
+        int id1, id2;
+
+        id1 = id2 = 0;
+        scheduler.TrySchedule("Event1", 5, () =>
+        {
+            id1 = id++;
+            Debug.Log("Event1 executed");
+        });
+        scheduler.TrySchedule("Event2", 5, () =>
+        {
+            id2 = id++;
+            Debug.Log("Event2 executed");
+        });
         int result = scheduler.ExecuteNext(2);
         Assert.That(result, Is.EqualTo(2));
+        Assert.That(id1, Is.LessThan(id2));
     }
-    
+
     // Registrar un Id después de ejecutarlo
     [Test]
-    public void TrySchedule_DuplicateIdAfterExecution_ReturnsFalse()
+    public void CanReuseIdAfterExecution()
     {
         var scheduler = new EventScheduler();
-        scheduler.TrySchedule("Event1", 5, () => { });
+
+        scheduler.TrySchedule("A", 5, () => { });
         scheduler.ExecuteNext(1);
-        bool result = scheduler.TrySchedule("Event1", 5, () => { });
-        Assert.That(result, Is.False);
+
+        bool result = scheduler.TrySchedule(
+            "A", 5, () => { });
+
+        Assert.That(result, Is.True);
     }
 }

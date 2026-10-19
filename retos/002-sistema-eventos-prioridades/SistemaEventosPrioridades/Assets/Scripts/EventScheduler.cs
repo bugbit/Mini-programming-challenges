@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class Event : IComparable<Event>
 {
-    public string Id { get; set; }
-    public int Priority { get; set; }
-    public int Orden { get; set; }
-    public Action Action { get; set; }
-    public bool Ejecuted { get; set; } = false;
+    public string Id { get; }
+    public int Priority { get; }
+    public int Orden { get; }
+    public Action Action { get; }
+
+    public Event(string id, int priority, int orden, Action action)
+    {
+        Id = id;
+        Priority = priority;
+        Orden = orden;
+        Action = action;
+    }
 
     public int CompareTo(Event other)
     {
-        var cmp = Ejecuted.CompareTo(other.Ejecuted);
-
-        if (cmp != 0)
-            return cmp; // Los no ejecutados primero
-
-        cmp = other.Priority.CompareTo(Priority);
+        var cmp = other.Priority.CompareTo(Priority);
 
         return (cmp != 0)
             ? cmp // Mayor prioridad primero
@@ -31,12 +33,9 @@ public class EventScheduler
     private readonly List<Event> _events = new();
     private readonly Dictionary<string, Event> _eventIds = new();
 
-    private readonly Event _eventFirstExecuted =
-        new() { Priority = int.MaxValue, Orden = int.MinValue, Ejecuted = true };
-
     public bool PrintLogs { get; set; } = true;
-    
-    public int Count=> _events.Count;
+
+    public int Count => _events.Count;
 
     /*
 Reglas:
@@ -52,8 +51,7 @@ Reglas:
             return false;
         if (action == null)
             return false;
-        var @event = new Event
-            { Id = id, Priority = priority, Orden = _lastOrden++, Action = action, Ejecuted = false };
+        var @event = new Event(id, priority, _lastOrden++, action);
 
         if (!_eventIds.TryAdd(id, @event))
             return false;
@@ -98,20 +96,10 @@ Para este reto, puedes asumir que las acciones no lanzan excepciones y que no se
         {
             var @event = _events[idx];
 
-            if (@event.Ejecuted)
-                break;
-
             @event.Action.Invoke();
-            @event.Ejecuted = true;
             executedCount++;
             _events.RemoveAt(idx);
-
-            var idxF = _events.BinarySearch(@event);
-
-            if (idxF < 0)
-                idxF = ~idxF;
-
-            _events.Insert(idxF, @event);
+            _eventIds.Remove(@event.Id);
 
             if (PrintLogs)
                 PrintEvents();
@@ -134,9 +122,6 @@ Un evento ya ejecutado no puede cancelarse.
         if (!_eventIds.TryGetValue(id, out var @event))
             return false;
 
-        if (@event.Ejecuted)
-            return false;
-
         Debug.Log($"Evento {id} programado con cancelado");
 
         return _eventIds.Remove(id) && _events.Remove(@event);
@@ -146,6 +131,6 @@ Un evento ya ejecutado no puede cancelarse.
     {
         foreach (var @event in _events)
             Debug.Log(
-                $"Id: {@event.Id}, Priority: {@event.Priority}, Orden: {@event.Orden}, Ejecuted: {@event.Ejecuted}");
+                $"Id: {@event.Id}, Priority: {@event.Priority}, Orden: {@event.Orden}");
     }
 }
