@@ -109,6 +109,7 @@ public class EventSchedulerTests
         Assert.That(result, Is.True);
         var executes = scheduler.ExecuteNext(1);
         Assert.That(executes, Is.EqualTo(0));
+        Assert.That(scheduler.Count, Is.EqualTo(0));
     }
 
     // Cancelar un evento inexistente
@@ -119,6 +120,7 @@ public class EventSchedulerTests
         scheduler.TrySchedule("Event2", 5, () => { });
         bool result = scheduler.Cancel("Event1");
         Assert.That(result, Is.False);
+        Assert.That(scheduler.Count, Is.EqualTo(1));
     }
 
     // Dos eventos con igual prioridad
@@ -135,7 +137,7 @@ public class EventSchedulerTests
             id1 = id++;
             Debug.Log("Event1 executed");
         });
-        scheduler.TrySchedule("Event2", 5, () =>
+        scheduler.TrySchedule("Event2", 2, () =>
         {
             id2 = id++;
             Debug.Log("Event2 executed");
@@ -154,9 +156,12 @@ public class EventSchedulerTests
         scheduler.TrySchedule("A", 5, () => { });
         scheduler.ExecuteNext(1);
 
+        Assert.That(scheduler.Count, Is.EqualTo(0));
+
         bool result = scheduler.TrySchedule(
             "A", 5, () => { });
 
         Assert.That(result, Is.True);
+        Assert.That(scheduler.Count, Is.EqualTo(1));
     }
 }

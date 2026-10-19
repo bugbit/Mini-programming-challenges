@@ -96,10 +96,10 @@ Para este reto, puedes asumir que las acciones no lanzan excepciones y que no se
         {
             var @event = _events[idx];
 
-            @event.Action.Invoke();
-            executedCount++;
             _events.RemoveAt(idx);
             _eventIds.Remove(@event.Id);
+            @event.Action.Invoke();
+            executedCount++;
 
             if (PrintLogs)
                 PrintEvents();
