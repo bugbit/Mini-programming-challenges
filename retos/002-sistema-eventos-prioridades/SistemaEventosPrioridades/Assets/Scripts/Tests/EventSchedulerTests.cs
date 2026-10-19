@@ -132,6 +132,30 @@ public class EventSchedulerTests
         int id1, id2;
 
         id1 = id2 = 0;
+        scheduler.TrySchedule("Event1", 2, () =>
+        {
+            id1 = id++;
+            Debug.Log("Event1 executed");
+        });
+        scheduler.TrySchedule("Event2", 2, () =>
+        {
+            id2 = id++;
+            Debug.Log("Event2 executed");
+        });
+        int result = scheduler.ExecuteNext(2);
+        Assert.That(result, Is.EqualTo(2));
+        Assert.That(id1, Is.LessThan(id2));
+    }
+
+    // Dos eventos con igual prioridad
+    [Test]
+    public void ExecuteNext_NoEqualPriorityEvents_ExecutesInOrder()
+    {
+        var scheduler = new EventScheduler();
+        var id = 1;
+        int id1, id2;
+
+        id1 = id2 = 0;
         scheduler.TrySchedule("Event1", 5, () =>
         {
             id1 = id++;
