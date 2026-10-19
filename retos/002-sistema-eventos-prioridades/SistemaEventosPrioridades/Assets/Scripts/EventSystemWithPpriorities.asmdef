@@ -1,0 +1,14 @@
+{
+    "name": "EventSystemWithPpriorities",
+    "rootNamespace": "EventSystemWithPpriorities",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
