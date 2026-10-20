@@ -13,6 +13,7 @@ Consulta el [flujo de trabajo](docs/FLUJO_DE_TRABAJO.md) y la [guía de ayuda y 
 - [Reto 1: Inventario de pociones](retos/001-inventario-pociones/README.md) — C#/.NET de consola.
 - [Reto 2: Sistema de eventos con prioridades](retos/002-sistema-eventos-prioridades/README.md) — C#/.NET de consola.
 - [Reto 3: Movimiento con deshacer y rehacer](retos/003-movimiento-deshacer-rehacer/README.md) — C++17 de consola.
+- [Reto 4: Fabricación de objetos](retos/004-fabricacion-objetos/README.md) — C#/.NET de consola.
 
 Las pistas están en un archivo separado dentro de cada reto. Puedes pedirlas cuando quieras.
 
