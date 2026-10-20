@@ -60,6 +60,9 @@ bool MovementUndoReUndo::Move(int dx, int dy)
     if (!((dx == 1 && dy == 0) || (dx == -1 && dy == 0) || (dx == 0 && dy == 1) || (dx == 0 && dy == -1)))
         return false;
 
+    // Un movimiento rechazado conserva la posición y todo el historial, incluidos los movimientos disponibles para rehacer.
+    while (!reUndoStack.empty())
+        reUndoStack.pop();
     undoStack.push(currentPosition);
     currentPosition.x += dx;
     currentPosition.y += dy;
@@ -225,6 +228,7 @@ void Test3()
     assert(!result, "move 17");
 }
 
+// Rechazar diagonales, saltos y movimientos sin desplazamiento sin cambiar el estado.
 void Test4()
 {
     MovementUndoReUndo movement_undo_re_undo(5, 5);
@@ -240,7 +244,51 @@ void Test4()
     assert(!result);
 }
 
-// Rechazar diagonales, saltos y movimientos sin desplazamiento sin cambiar el estado.
+// Deshacer todos los movimientos hasta volver a (0, 0) y rechazar un deshacer adicional.
+void Test5()
+{
+    MovementUndoReUndo movement_undo_re_undo(5, 5);
+    bool result;
+
+    movement_undo_re_undo.Move(1, 0);
+    movement_undo_re_undo.Move(1, 0);
+    movement_undo_re_undo.Move(1, 0);
+    movement_undo_re_undo.Move(1, 0);
+    movement_undo_re_undo.Undo();
+    movement_undo_re_undo.Undo();
+    movement_undo_re_undo.Undo();
+    movement_undo_re_undo.Undo();
+    result = movement_undo_re_undo.Redo();
+    assert(result);
+    Position position;
+    movement_undo_re_undo.GetPosition(position);
+    assert(position.x==1 && position.y==0);
+}
+
+// Rehacer todo el recorrido y rechazar un rehacer adicional.
+void Test6()
+{
+    MovementUndoReUndo movement_undo_re_undo(5, 5);
+    bool result;
+
+    movement_undo_re_undo.Move(1, 0);
+    movement_undo_re_undo.Move(1, 0);
+    movement_undo_re_undo.Move(1, 0);
+    movement_undo_re_undo.Move(1, 0);
+    movement_undo_re_undo.Undo();
+    movement_undo_re_undo.Undo();
+    movement_undo_re_undo.Undo();
+    movement_undo_re_undo.Undo();
+    movement_undo_re_undo.Redo();
+    movement_undo_re_undo.Redo();
+    movement_undo_re_undo.Redo();
+    movement_undo_re_undo.Redo();
+    result = movement_undo_re_undo.Undo();
+    assert(result);
+    Position position;
+    movement_undo_re_undo.GetPosition(position);
+    assert(position.x==3 && position.y==0);
+}
 
 int main(int argc, char* argv[])
 {
@@ -248,7 +296,9 @@ int main(int argc, char* argv[])
     Test2();
     Test3();
     Test4();
-    //Samples();    
+    Test5();
+    Test6();
+    Samples();    
 
     return 0;
 }
