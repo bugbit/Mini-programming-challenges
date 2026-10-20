@@ -215,12 +215,12 @@ void Test7()
 void Test8()
 {
     var recetaEspada = new Recipient { ItemNameProduce = "Espada", Quantityproduces = 1 };
-    
+
     recetaEspada.Items.Add(new RecipientItem { ItemName = "Hierro", Quantity = 3 });
     recetaEspada.Items.Add(new RecipientItem { ItemName = "Madera", Quantity = 2 });
 
     var recetaSuperEspada = new Recipient { ItemNameProduce = "SuperEspada", Quantityproduces = 1 };
-    
+
     recetaSuperEspada.Items.Add(new RecipientItem { ItemName = "Acero", Quantity = 5 });
     recetaSuperEspada.Items.Add(new RecipientItem { ItemName = "Madera", Quantity = 3 });
 
@@ -255,7 +255,7 @@ void Test8()
 void Test9()
 {
     var recetaEspada = new Recipient { ItemNameProduce = "Espada", Quantityproduces = 1 };
-    
+
     recetaEspada.Items.Add(new RecipientItem { ItemName = "Hierro", Quantity = 3 });
     recetaEspada.Items.Add(new RecipientItem { ItemName = "Madera", Quantity = 2 });
 
@@ -282,7 +282,7 @@ void Test9()
 void Test10()
 {
     var recetaEspada = new Recipient { ItemNameProduce = "Espada", Quantityproduces = 1 };
-    
+
     recetaEspada.Items.Add(new RecipientItem { ItemName = "Hierro", Quantity = 3 });
     recetaEspada.Items.Add(new RecipientItem { ItemName = "Madera", Quantity = 2 });
 
@@ -296,7 +296,31 @@ void Test10()
     inventary.Items.Add("SuperEspada", 0);
 
     Debug.Assert(inventary.GetQuantity("Hierro") == 10, "Hierro==10");
-    Debug.Assert(inventary.GetQuantity("hierro") == 20, "hierro==20");    
+    Debug.Assert(inventary.GetQuantity("hierro") == 20, "hierro==20");
+}
+
+// La comprobación de materiales funciona, pero hay un error al fabricar un objeto que todavía no existe en el inventario.
+void Test11()
+{
+    var recetaEspada = new Recipient { ItemNameProduce = "Espada", Quantityproduces = 1 };
+
+    recetaEspada.Items.Add(new RecipientItem { ItemName = "Hierro", Quantity = 3 });
+    recetaEspada.Items.Add(new RecipientItem { ItemName = "Madera", Quantity = 2 });
+
+    var inventary = new Inventory();
+
+    inventary.Items.Add("Hierro", 10);
+    inventary.Items.Add("Madera", 10);
+    inventary.Items.Add("Acero", 10);
+
+    var craft = new Craft { Inventory = inventary };
+
+    var result = craft.TryCraft(recetaEspada);
+    Debug.Assert(result, "TryCraft(recetaEspada) == true");
+    Debug.Assert(inventary.GetQuantity("Hierro") == 7, "Hierro==7");
+    Debug.Assert(inventary.GetQuantity("Acero") == 10, "Acero==10");
+    Debug.Assert(inventary.GetQuantity("Madera") == 8, "Madera==8");
+    Debug.Assert(inventary.GetQuantity("Espada") == 1, "Espada==1");
 }
 
 Sample();
@@ -310,6 +334,7 @@ Test7();
 Test8();
 Test9();
 Test10();
+Test11();
 
 public class RecipientItem
 {
@@ -341,7 +366,13 @@ public class Inventory
         return true;
     }
 
-    public void Produce(string itemName, int quantity) => Items[itemName] += quantity;
+    public void Produce(string itemName, int quantity)
+    {
+        if (!Items.TryGetValue(itemName, out var quantityItem))
+            Items.Add(itemName, quantity);
+        else
+            Items[itemName] = quantityItem + quantity;
+    }
 
     public void Print()
     {
