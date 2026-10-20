@@ -2,11 +2,12 @@
 
 ## Estructura del proyecto
 
-Este repositorio reúne retos educativos de C#/.NET, Unity y C++. Cada reto vive en `retos/NNN-nombre/`, con su enunciado en `README.md` y las pistas en `PISTAS.md`.
+Este repositorio reúne retos educativos de C#/.NET, Unity, Blazor y C++. Cada reto vive en `retos/NNN-nombre/`, con su enunciado en `README.md` y las pistas en `PISTAS.md`.
 
 - Los retos 001 y 004 contienen aplicaciones de consola .NET 10; el código está en sus respectivos `Program.cs`.
 - El reto 002 contiene el proyecto Unity `SistemaEventosPrioridades/`: scripts en `Assets/Scripts/`, pruebas en `Assets/Scripts/Tests/` y escenas en `Assets/Scenes/`.
 - El reto 003 contiene el proyecto C++ `MovementUndoReUndo/`.
+- El reto 005 (reserva de una sala de reuniones) es una aplicación Blazor con .NET 10, Server o WebAssembly a elección de Oscar. Por ahora solo tiene el enunciado; Oscar creará el proyecto al resolverlo y todavía no tiene `PISTAS.md`. La lógica de reservas debe quedar en una clase separada de los componentes.
 - `docs/` contiene el flujo de trabajo, las reglas de ayuda y las plantillas.
 
 Al añadir un reto, usa las plantillas y actualiza los índices `README.md` y `retos/README.md`.
@@ -25,6 +26,8 @@ El primer comando compila el reto 001; el segundo ejecuta el 004. Ambos requiere
 Para C++, abre `retos/003-movimiento-deshacer-rehacer/MovementUndoReUndo/MovementUndoReUndo.slnx` en Visual Studio con las herramientas C++ v143. Compila y ejecuta desde el IDE.
 
 Abre `retos/002-sistema-eventos-prioridades/SistemaEventosPrioridades/` con Unity 6000.6.5f1. No existe un comando global de compilación.
+
+El reto 005 se ejecutará con `dotnet run --project` sobre el `.csproj` de Blazor cuando exista; añade aquí la ruta concreta al crearlo.
 
 ## Estilo y nombres
 
