@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ReservaSala.Application/ReservaSala.Application.csproj" />
+  <Project Path="ReservaSala.Data/ReservaSala.Data.csproj" />
+  <Project Path="ReservaSalaApp/ReservaSalaApp.csproj" />
+</Solution>

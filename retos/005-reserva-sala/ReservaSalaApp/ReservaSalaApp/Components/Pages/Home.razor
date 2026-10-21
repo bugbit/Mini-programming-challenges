@@ -1,0 +1,101 @@
+﻿@page "/"
+@using ReservaSala.Application;
+@using ReservaSala.Data
+@using ReservaSalaApp.ViewModels;
+@inject SalaServices SalaServices
+
+<PageTitle>Home</PageTitle>
+
+<fieldset>
+    <legend>Nueva Reserva</legend>
+    <EditForm Model="_alta" OnValidSubmit="Submit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div>
+            <label>
+                Nombre: <InputText @ref="_nombreRef" @bind-Value="_alta!.Nombre" />
+            </label>
+            @* <ValidationMessage For="() => _alta!.Nombre" /> *@
+        </div>
+        <div>
+            <label>
+                Hora: <InputNumber @bind-Value="_alta!.Hora" />
+            </label>
+            @* <ValidationMessage For="() => _alta!.Nombre" /> *@
+        </div>
+        <div>
+            <label>
+                Duracion: <InputNumber @bind-Value="_alta!.Duracion" />
+            </label>
+            @* <ValidationMessage For="() => _alta!.Nombre" /> *@
+        </div>
+        @if (_result.HasValue)
+        {
+            var color = _result.Value.Success ? "green" : "red";
+            var error = _result.Value.Success ? "Aceptada" : $"Rechazada: {_result.Value.Error}";
+
+            <div>
+                <label>
+                    Resultado: <span style="color: @color;">@error</span>
+                </label>
+            </div>
+        }
+        <div>
+            <button type="submit">Reservar</button>
+        </div>
+    </EditForm>
+    <div>
+        <p>Lista de reservas:</p>
+        <ul>
+            @foreach (var reserva in SalaServices.Reservas.Values)
+            {
+                <li>
+                    @reserva&nbsp;<button @onclick=@(e => Cancelar(reserva))>Cancelar</button>
+                </li>
+            }
+        </ul>
+    </div>
+    <div>
+        <p>Horas:</p>
+        <ul>
+            @foreach (var reserva in SalaServices.Horas)
+            {
+                <li>@(reserva.Key):00 @(reserva.Value?.Nombre ?? "Libre")</li>
+            }
+        </ul>
+        <p>Horas libres: @SalaServices.HorasLibres()</p>
+    </div>
+</fieldset>
+
+@code
+{
+    private AltaReservaViewModel? _alta;
+    private Result<Reserva, string>? _result;
+    private InputText? _nombreRef;
+
+    protected override void OnInitialized()
+    {
+        _alta ??= new();
+    }
+
+    private async Task Submit()
+    {
+        var result = SalaServices.Reservar(_alta!.ToReserva());
+        if (result.Success)
+            _alta.CleanData();
+
+        if (_nombreRef is not null && _nombreRef.Element.HasValue)
+            await _nombreRef.Element.Value.FocusAsync();
+
+        _result = result;
+        //En onclick ya lo hace
+        //StateHasChanged();
+    }
+
+    private void Cancelar(Reserva reserva)
+    {
+        SalaServices.Cancelar(reserva);
+        //En onclick ya lo hace
+        //StateHasChanged();
+    }
+}
