@@ -7,7 +7,7 @@ Este repositorio reúne retos educativos de C#/.NET, Unity, Blazor y C++. Cada r
 - Los retos 001 y 004 contienen aplicaciones de consola .NET 10; el código está en sus respectivos `Program.cs`.
 - El reto 002 contiene el proyecto Unity `SistemaEventosPrioridades/`: scripts en `Assets/Scripts/`, pruebas en `Assets/Scripts/Tests/` y escenas en `Assets/Scenes/`.
 - El reto 003 contiene el proyecto C++ `MovementUndoReUndo/`.
-- El reto 005 (reserva de una sala de reuniones) es una aplicación Blazor con .NET 10, Server o WebAssembly a elección de Oscar. Por ahora solo tiene el enunciado; Oscar creará el proyecto al resolverlo y todavía no tiene `PISTAS.md`. La lógica de reservas debe quedar en una clase separada de los componentes.
+- El reto 005 contiene la solución Blazor Server `ReservaSalaApp/` (.NET 10): `ReservaSala.Data` (modelo `Reserva`), `ReservaSala.Application` (`SalaServices` con la lógica de reservas y `Result`) y `ReservaSalaApp` (componentes en `Components/`, página principal en `Components/Pages/Home.razor`). La lógica de reservas no debe pasar a los componentes.
 - `docs/` contiene el flujo de trabajo, las reglas de ayuda y las plantillas.
 
 Al añadir un reto, usa las plantillas y actualiza los índices `README.md` y `retos/README.md`.
@@ -19,15 +19,14 @@ Ejecuta desde la raíz:
 ```powershell
 dotnet build retos/001-inventario-pociones/Potion-inventory.csproj
 dotnet run --project retos/004-fabricacion-objetos/Potion-inventory/Potion-inventory.csproj
+dotnet run --project retos/005-reserva-sala/ReservaSalaApp/ReservaSalaApp/ReservaSalaApp.csproj
 ```
 
-El primer comando compila el reto 001; el segundo ejecuta el 004. Ambos requieren el SDK .NET 10.
+El primer comando compila el reto 001; el segundo ejecuta el 004 y el tercero arranca la aplicación Blazor del 005, que se prueba en el navegador. Todos requieren el SDK .NET 10.
 
 Para C++, abre `retos/003-movimiento-deshacer-rehacer/MovementUndoReUndo/MovementUndoReUndo.slnx` en Visual Studio con las herramientas C++ v143. Compila y ejecuta desde el IDE.
 
 Abre `retos/002-sistema-eventos-prioridades/SistemaEventosPrioridades/` con Unity 6000.6.5f1. No existe un comando global de compilación.
-
-El reto 005 se ejecutará con `dotnet run --project` sobre el `.csproj` de Blazor cuando exista; añade aquí la ruta concreta al crearlo.
 
 ## Estilo y nombres
 

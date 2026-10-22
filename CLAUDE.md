@@ -11,18 +11,19 @@ Colección de mini retos educativos (15–30 min) para Oscar, en español. Cada 
 - 001 y 004: consola .NET 10 (`Program.cs` único; el 001 tiene el `.csproj` en la raíz del reto, el 004 dentro de `Potion-inventory/`).
 - 002: proyecto Unity 6000.6.5f1 (`SistemaEventosPrioridades/`), código en `Assets/Scripts/` y pruebas NUnit en `Assets/Scripts/Tests/`.
 - 003: C++17 (Visual Studio, toolset v143), `MovementUndoReUndo.slnx`.
-- 005: Blazor con .NET 10 (Server o WebAssembly, a elección de Oscar), reserva de una sala con detección de solapamientos. Por ahora solo `README.md`; el proyecto y `PISTAS.md` están pendientes.
+- 005: Blazor Server .NET 10, `ReservaSalaApp/ReservaSalaApp.slnx` con tres proyectos: `ReservaSala.Data` (modelo), `ReservaSala.Application` (`SalaServices`, lógica de reservas) y `ReservaSalaApp` (web, `Components/Pages/Home.razor`).
 
 ## Comandos (desde la raíz, PowerShell)
 
 ```powershell
 dotnet build retos/001-inventario-pociones/Potion-inventory.csproj
 dotnet run --project retos/004-fabricacion-objetos/Potion-inventory/Potion-inventory.csproj
+dotnet run --project retos/005-reserva-sala/ReservaSalaApp/ReservaSalaApp/ReservaSalaApp.csproj
 ```
 
 - Unity (002): abrir la carpeta del proyecto en Unity; pruebas desde Test Runner en Edit Mode (nombres tipo `TrySchedule_ValidEvent_ReturnsTrue`). No hay build por CLI.
 - C++ (003): compilar y ejecutar desde Visual Studio.
-- Blazor (005): `dotnet run --project` sobre su `.csproj` cuando exista; comprueba los casos en el navegador, incluidos rechazos y cancelaciones.
+- Blazor (005): tras `dotnet run`, comprueba los casos en el navegador, incluidos rechazos y cancelaciones. `SalaServices` puede probarse sin la interfaz.
 - No hay linter, formateador ni suite de pruebas global. Compilar no demuestra que los casos del enunciado funcionen: ejecuta y comprueba rechazos y operaciones que deben conservar el estado, e indica qué quedó sin verificar.
 
 ## Reglas de colaboración (importantes)
