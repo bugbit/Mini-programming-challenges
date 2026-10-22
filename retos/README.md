@@ -9,3 +9,4 @@ Cada reto tiene su propio directorio. El enunciado está en `README.md`; las pis
 | 3 | [Movimiento con deshacer y rehacer](003-movimiento-deshacer-rehacer/README.md) | C++17 de consola | 30 min |
 | 4 | [Fabricación de objetos](004-fabricacion-objetos/README.md) | C# / .NET de consola | 30 min |
 | 5 | [Reserva de una sala de reuniones](005-reserva-sala/README.md) | Blazor (Server o WebAssembly) | 30 min |
+| 6 | [Analizador de logs](006-analizador-logs/README.md) | C++17 de consola | 30 min |

@@ -12,6 +12,7 @@ Colección de mini retos educativos (15–30 min) para Oscar, en español. Cada 
 - 002: proyecto Unity 6000.6.5f1 (`SistemaEventosPrioridades/`), código en `Assets/Scripts/` y pruebas NUnit en `Assets/Scripts/Tests/`.
 - 003: C++17 (Visual Studio, toolset v143), `MovementUndoReUndo.slnx`.
 - 005: Blazor Server .NET 10, `ReservaSalaApp/ReservaSalaApp.slnx` con tres proyectos: `ReservaSala.Data` (modelo), `ReservaSala.Application` (`SalaServices`, lógica de reservas) y `ReservaSalaApp` (web, `Components/Pages/Home.razor`).
+- 006: C++17, analizador de logs (parseo y validación de líneas). Por ahora solo `README.md` y `PISTAS.md`; el proyecto de Visual Studio está pendiente.
 
 ## Comandos (desde la raíz, PowerShell)
 
@@ -22,7 +23,7 @@ dotnet run --project retos/005-reserva-sala/ReservaSalaApp/ReservaSalaApp/Reserv
 ```
 
 - Unity (002): abrir la carpeta del proyecto en Unity; pruebas desde Test Runner en Edit Mode (nombres tipo `TrySchedule_ValidEvent_ReturnsTrue`). No hay build por CLI.
-- C++ (003): compilar y ejecutar desde Visual Studio.
+- C++ (003 y 006): compilar y ejecutar desde Visual Studio.
 - Blazor (005): tras `dotnet run`, comprueba los casos en el navegador, incluidos rechazos y cancelaciones. `SalaServices` puede probarse sin la interfaz.
 - No hay linter, formateador ni suite de pruebas global. Compilar no demuestra que los casos del enunciado funcionen: ejecuta y comprueba rechazos y operaciones que deben conservar el estado, e indica qué quedó sin verificar.
 

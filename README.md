@@ -15,6 +15,7 @@ Consulta el [flujo de trabajo](docs/FLUJO_DE_TRABAJO.md) y la [guía de ayuda y 
 - [Reto 3: Movimiento con deshacer y rehacer](retos/003-movimiento-deshacer-rehacer/README.md) — C++17 de consola.
 - [Reto 4: Fabricación de objetos](retos/004-fabricacion-objetos/README.md) — C#/.NET de consola.
 - [Reto 5: Reserva de una sala de reuniones](retos/005-reserva-sala/README.md) — Blazor (Server o WebAssembly).
+- [Reto 6: Analizador de logs](retos/006-analizador-logs/README.md) — C++17 de consola.
 
 Las pistas están en un archivo separado dentro de cada reto. Puedes pedirlas cuando quieras.
 
