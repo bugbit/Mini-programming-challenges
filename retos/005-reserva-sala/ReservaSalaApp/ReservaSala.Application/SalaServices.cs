@@ -10,7 +10,7 @@ public class SalaServices
     public IReadOnlyDictionary<int, Reserva> Reservas { get => _reservas; }
     public IReadOnlyDictionary<int, Reserva?> Horas { get => _horas; }
 
-    public int GetHoraFin(Reserva reserva) => reserva.Hora + reserva.Duracion - 1;
+    public int GetUltimaHoraOcupada(Reserva reserva) => reserva.Hora + reserva.Duracion - 1;
 
     public int HorasLibres() => Horas.Count(h => h.Value is null);
 
@@ -24,16 +24,16 @@ public class SalaServices
             return Result<Reserva, string>.SetError("La duracion tiene que ser entre 1 y 3 horas");
 
         // Una reserva ocupa desde su hora de inicio hasta su hora de fin, sin incluir esta última. Una reserva de 10:00 a 12:00 ocupa las horas 10:00 y 11:00.
-        int horaFin = GetHoraFin(reserva);
+        int ultimaHora = GetUltimaHoraOcupada(reserva);
 
         // Dos reservas pueden ser consecutivas: 10:00–12:00 y 12:00–13:00 son compatibles.
         // Rechaza cualquier reserva que se solape, aunque sea una sola hora, con otra existente.
-        for (var hora = reserva.Hora; hora <= horaFin; hora++)
+        for (var hora = reserva.Hora; hora <= ultimaHora; hora++)
             if (Horas.TryGetValue(hora, out var reservaDummy) && reservaDummy != null)
                 return Result<Reserva, string>.SetError($"se solapa con {reservaDummy}");
 
         // Rechaza las reservas que terminen después de las 18:00. Por ejemplo, empezar a las 17:00 con una duración de 2 horas no es válido.
-        if (horaFin >= 18)
+        if (ultimaHora >= 18)
             return Result<Reserva, string>.SetError("termina después de las 18:00");
 
         // El nombre es obligatorio. Elimina los espacios del principio y del final antes de validarlo y de guardarlo; un nombre formado solo por espacios se rechaza.
@@ -52,9 +52,9 @@ public class SalaServices
 
         _reservas.Add(reserva.Hora, reserva);
 
-        var horaFin = GetHoraFin(reserva);
+        var ultimaHora = GetUltimaHoraOcupada(reserva);
 
-        for (var hora = reserva.Hora; hora <= horaFin; hora++)
+        for (var hora = reserva.Hora; hora <= ultimaHora; hora++)
             _horas[hora] = reserva;
 
         return reserva;
@@ -63,18 +63,14 @@ public class SalaServices
     public bool Cancelar(Reserva reserva)
     {
         if (!_reservas.TryGetValue(reserva.Hora, out var reservaDummy))
-            throw new InvalidOperationException();
+            return false;
 
         if (!object.ReferenceEquals(reserva, reservaDummy))
-            throw new InvalidOperationException();
+            return false;
 
-        int horaFin = GetHoraFin(reserva);
+        int ultimaHora = GetUltimaHoraOcupada(reserva);
 
-        for (var hora = reserva.Hora; hora <= horaFin; hora++)
-            if (!object.ReferenceEquals(Horas[hora], reserva))
-                throw new InvalidOperationException();
-
-        for (var hora = reserva.Hora; hora <= horaFin; hora++)
+        for (var hora = reserva.Hora; hora <= ultimaHora; hora++)
             _horas[hora] = null;
 
         return _reservas.Remove(reserva.Hora);

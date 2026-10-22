@@ -8,7 +8,6 @@ public class AltaReservaViewModel
     public string? Nombre { get; set; }
     [Required] public int? Hora { get; set; }
     [Required] public int? Duracion { get; set; }
-    public string? Resultado { get; set; }
 
     public Reserva ToReserva() => new()
     {

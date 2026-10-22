@@ -8,26 +8,23 @@
 
 <fieldset>
     <legend>Nueva Reserva</legend>
-    <EditForm Model="_alta" OnValidSubmit="Submit">
+    <EditForm Model="_alta" OnValidSubmit="Submit" OnInvalidSubmit="InvalidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div>
             <label>
                 Nombre: <InputText @ref="_nombreRef" @bind-Value="_alta!.Nombre" />
             </label>
-            @* <ValidationMessage For="() => _alta!.Nombre" /> *@
         </div>
         <div>
             <label>
                 Hora: <InputNumber @bind-Value="_alta!.Hora" />
             </label>
-            @* <ValidationMessage For="() => _alta!.Nombre" /> *@
         </div>
         <div>
             <label>
                 Duracion: <InputNumber @bind-Value="_alta!.Duracion" />
             </label>
-            @* <ValidationMessage For="() => _alta!.Nombre" /> *@
         </div>
         @if (_result.HasValue)
         {
@@ -76,6 +73,12 @@
     protected override void OnInitialized()
     {
         _alta ??= new();
+    }
+
+    private void InvalidSubmit()
+    {
+        if (_result.HasValue)
+            _result = null;
     }
 
     private async Task Submit()
