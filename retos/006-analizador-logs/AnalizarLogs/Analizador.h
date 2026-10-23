@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 
-enum Niveles { NONE, INFO, WARN, ERROR };
+enum Niveles { NONE, INFO, WARN, ERROR, DEBUG };
 
 typedef struct _Time
 {
@@ -24,9 +24,18 @@ public:
 class Analizador
 {
 public:
+	inline Analizador() :nivelLineasOk(), horaLineasOk(), numLineasNoOk(), horaCountError(), numLineaActual(0) {}
 	bool ProcessLine(std::string& linea);
 	int GetCount(Niveles level);
+	int GetCountByHour(int hour);
+	// devuelve los números de las líneas inválidas, en orden creciente.
+	inline std::vector<int> GetInvalidLines()
+	{
+		return numLineasNoOk;
+	}
+	int GetBusiestErrorHour();
 private:
+	int numLineaActual;
 	std::map<Niveles, int> nivelLineasOk;
 	std::map<int, int> horaLineasOk;
 	std::vector<int> numLineasNoOk;

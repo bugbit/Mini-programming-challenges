@@ -12,7 +12,7 @@ Colección de mini retos educativos (15–30 min) para Oscar, en español. Cada 
 - 002: proyecto Unity 6000.6.5f1 (`SistemaEventosPrioridades/`), código en `Assets/Scripts/` y pruebas NUnit en `Assets/Scripts/Tests/`.
 - 003: C++17 (Visual Studio, toolset v143), `MovementUndoReUndo.slnx`.
 - 005: Blazor Server .NET 10, `ReservaSalaApp/ReservaSalaApp.slnx` con tres proyectos: `ReservaSala.Data` (modelo), `ReservaSala.Application` (`SalaServices`, lógica de reservas) y `ReservaSalaApp` (web, `Components/Pages/Home.razor`).
-- 006: C++17, analizador de logs (parseo y validación de líneas). Por ahora solo `README.md` y `PISTAS.md`; el proyecto de Visual Studio está pendiente.
+- 006: analizador de logs (parseo y validación de líneas), `AnalizarLogs/AnalizarLogs.slnx`. Clase `Analizador` en `Analizador.h`/`.cpp`; `main` en `AnalizarLogs.cpp`. El enunciado pide C++17, pero el proyecto usa toolset v145 y C++20.
 
 ## Comandos (desde la raíz, PowerShell)
 

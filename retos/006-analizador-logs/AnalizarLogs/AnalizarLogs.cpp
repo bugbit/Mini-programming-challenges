@@ -5,17 +5,51 @@
 
 #include "Analizador.h"
 
+const char* lineas[] =
+{
+	"[INFO] 09:15 Servidor iniciado",
+	"[ERROR] 09:47 No se pudo conectar a la base de datos",
+	"",
+	"[WARN] 10:02 Uso de memoria al 85 %",
+	"[ERROR] 10:30 Tiempo de espera agotado",
+	"[ERROR] 10:31 Tiempo de espera agotado",
+	"[DEBUG] 10:40 Valor de x = 3",
+	"[ERROR] 9:50 Reintento fallido",
+	"[INFO] 24:00 Cambio de día",
+	"[INFO] 11:05",
+	"[error] 11:10 Disco lleno",
+	"[WARN]  11:20 Doble espacio",
+	"[ERROR] 11:59 Fallo en [pagos]: reintentando",
+	nullptr
+};
+
 int main()
 {
 	Analizador analizador;
 
-	std::string linea("[INFO] 09:15 Servidor iniciado");
-	analizador.ProcessLine(linea);
-	analizador.ProcessLine(linea);
 
-	std::cout << "Count:" << analizador.GetCount(INFO) << std::endl;
+	for (const char** lineasPtr = lineas; *lineasPtr != nullptr; lineasPtr++)
+	{
+		std::string linea(*lineasPtr);
+		bool result = analizador.ProcessLine(linea);
 
-	std::cout << "Hello World!\n";
+		std::cout << linea << std::endl << "Result: " << result << std::endl;
+	}
+
+	std::cout << "GetCount(\"INFO\")" << analizador.GetCount(INFO) << std::endl;
+	std::cout << "GetCount(\"WARN\")" << analizador.GetCount(WARN) << std::endl;
+	std::cout << "GetCount(\"ERROR\")" << analizador.GetCount(ERROR) << std::endl;
+	std::cout << "GetCount(\"DEBUG\")" << analizador.GetCount(DEBUG) << std::endl;
+	std::cout << "GetCountByHour(9): " << analizador.GetCountByHour(9) << std::endl;
+	std::cout << "GetCountByHour(10): " << analizador.GetCountByHour(10) << std::endl;
+	std::cout << "GetCountByHour(11): " << analizador.GetCountByHour(11) << std::endl;
+	std::cout << "GetCountByHour(25): " << analizador.GetCountByHour(25) << std::endl;
+	std::cout << "GetInvalidLines(): ";
+
+	for (const int nunLine : analizador.GetInvalidLines())
+		std::cout << nunLine << ',';
+	std::cout << "\r." << std::endl;
+	std::cout << "GGetBusiestErrorHour(): " << analizador.GetBusiestErrorHour() << std::endl;
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
